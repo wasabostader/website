@@ -43,24 +43,62 @@ function setHead() {
 
 function setNavLogo(){
   const logoLinkElement = document.getElementById("logo");
-  if (logoLinkElement) {
-    // set the link to the website name by default
-    logoLinkElement.textContent = WEBSITE_NAME;
+  const sidebarLogoLinkElement = document.getElementById("sidebar-logo");
 
-    // if website logo is set, set the contents of the link to the logo
-    if (WEBSITE_LOGO) {
-      // create an image element
-      const logoImageElement = document.createElement("img");
-      logoImageElement.src = WEBSITE_LOGO;
-      logoImageElement.alt = WEBSITE_NAME;
-      logoLinkElement.textContent = ""; // Clear text content
-      logoLinkElement.appendChild(logoImageElement);
+  const elements = [logoLinkElement, sidebarLogoLinkElement];
+
+  for (const element of elements) {
+    if (element) {
+      // set the link to the website name by default
+      element.textContent = WEBSITE_NAME;
+  
+      // if website logo is set, set the contents of the link to the logo
+      if (WEBSITE_LOGO) {
+        // create an image element
+        const logoImageElement = document.createElement("img");
+        logoImageElement.src = WEBSITE_LOGO;
+        logoImageElement.alt = WEBSITE_NAME;
+        element.textContent = ""; // Clear text content
+        element.appendChild(logoImageElement);
+      }
     }
   }
 }
 
+function setupSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const hamburger = document.getElementById('hamburger');
+  const closeSidebar = document.getElementById('close-sidebar');
+
+  function openSidebar() {
+    sidebar.classList.remove('-translate-x-full');
+  }
+  function hideSidebar() {
+    sidebar.classList.add('-translate-x-full');
+  }
+
+  if (hamburger && sidebar) {
+    hamburger.addEventListener('click', openSidebar);
+  }
+  if (closeSidebar && sidebar) {
+    closeSidebar.addEventListener('click', hideSidebar);
+  }
+
+  // Hide sidebar on click outside (mobile only)
+  document.addEventListener('click', function (e) {
+    if (
+      sidebar &&
+      !sidebar.contains(e.target) &&
+      !hamburger.contains(e.target) &&
+      window.innerWidth < 768
+    ) {
+      hideSidebar();
+    }
+  });
+}
 
 document.addEventListener("DOMContentLoaded", function() {
   setHead();
   setNavLogo();
+  setupSidebar();
 });
