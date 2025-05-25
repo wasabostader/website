@@ -51,6 +51,37 @@
         intresserad av de kommande bostäderna, skicka in er intresseanmälan nedan!
       </p>
     </section>
+
+    <section id="slideshow"
+      class="relative w-full md:w-10/12 overflow-hidden rounded border border-gray-300 bg-white flex items-center">
+      <button id="prevSlide" type="button" aria-label="Föregående bild"
+        class="absolute left-2 z-10 p-2 focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-100" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <div
+        class="md:hidden absolute bottom-2 right-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded flex items-center gap-1 pointer-events-none select-none md:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="inline h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <circle cx="11" cy="11" r="7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <line x1="16.5" y1="16.5" x2="21" y2="21" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        Klicka för att förstora
+      </div>
+
+      <img id="slideshowImage" src="public/w-building.png" alt="Slideshow Image"
+        class="w-full h-full md:[h-50vh] object-cover transition duration-300">
+
+      <button id="nextSlide" type="button" aria-label="Nästa bild" class="absolute right-2 z-10 p-2 focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-100" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </section>
   </main>
 
   <footer class="bg-gray-200 text-center py-4 mt-8">
