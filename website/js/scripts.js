@@ -10,6 +10,7 @@ const WEBSITE_SLIDESHOW_IMAGES=[
   "public/w-living-room.png",
   "public/w-spa.png"
 ];
+const FORM_EMAIL="Alexander@rasouligroup.com";
 
 // Slideshow images array
 let currentSlide = 0;
@@ -199,6 +200,85 @@ function setupSlideshow() {
     }, { passive: false });
   }
 }
+
+function setupFormValidation() {
+  const submitBtn = document.getElementById('submit-btn');
+  const firstName = document.getElementById('first-name');
+  const lastName = document.getElementById('last-name');
+  const phone = document.getElementById('phone');
+  const email = document.getElementById('email');
+  
+  const fields = [firstName, lastName, phone, email];
+  
+  const disabledClassList = ['bg-gray-400', 'text-gray-200', 'cursor-not-allowed'];
+  const enabledClassList = ['bg-green-300', 'text-black', 'cursor-pointer'];
+  
+  function checkFields() {
+    const allFilled = fields.every(field => field && field.value.trim() !== '');
+    const emailIsValid = email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+    if (allFilled && emailIsValid) {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove(...disabledClassList);
+      submitBtn.classList.add(...enabledClassList);
+    } else {
+      submitBtn.disabled = true;
+      submitBtn.classList.remove(...enabledClassList);
+      submitBtn.classList.add(...disabledClassList);
+    }
+  }
+
+  fields.forEach(field => {
+    field.addEventListener('input', checkFields);
+  });
+
+  checkFields(); // Initial check on page load
+}
+
+function setupFormSubmission() {
+  const submitBtn = document.getElementById('submit-btn');
+  const form = document.getElementById('signup-form');
+
+  if (submitBtn && form) {
+    submitBtn.addEventListener('click', function(event) {
+      event.preventDefault(); // Prevent default form submission
+      if (submitBtn.disabled) return; // If button is disabled, do nothing
+
+      // Collect form data
+      const formData = new FormData(form);
+      const data = {
+        firstName: formData.get('first-name'),
+        lastName: formData.get('last-name'),
+        phone: formData.get('phone'),
+        email: formData.get('email')
+      };
+
+      // create subject line for the email
+      const subject = `Intresseanmälan från ${data.firstName} ${data.lastName}`;
+
+      // create an email template
+      const emailTemplate = `
+      Hej!
+
+      Jag vill anmäla mig till intresselistan med dessa uppgifter:
+
+        - Förnamn: ${data.firstName}
+        - Efternamn: ${data.lastName}
+        - Telefon: ${data.phone}
+        - E-post: ${data.email}
+      
+      Vänliga hälsningar,
+      ${data.firstName} ${data.lastName}
+      `;
+
+      // open email client with pre-filled data
+      const mailtoLink = `mailto:${FORM_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailTemplate)}`;
+      window.open(mailtoLink, '_blank');
+      // Optionally, you can reset the form after submission
+      form.reset();
+      // Re-check fields to update button state
+      setupFormValidation();
+    });
+  }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -206,4 +286,6 @@ document.addEventListener("DOMContentLoaded", function() {
   setNavLogo();
   setupSidebar();
   setupSlideshow();
+  setupFormValidation();
+  setupFormSubmission();
 });
